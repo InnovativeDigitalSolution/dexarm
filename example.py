@@ -9,7 +9,7 @@ dexarmPort1 = 'COM3'
 dexarmPort2 = 'COM4'
 
 # joystick map
-joy_move_to = "C" # "Num 3"
+joy_move_to = "Num 3" # "Num 3"
 joy_exec_file = "Num 9"
 joy_test1 = "Num 1"
 joy_disconnect = "Num 5"
@@ -40,8 +40,8 @@ def onJoystickInput(data):
      if (data.value == 1):
         print(joy_move_to, "was pressed its value is", data.value)
         # dexarm1.read_test1()
-        # dexarm1.move_to1(50, 300, 0)
-        dexarm1.read_Gcode1()
+        dexarm1.move_to1(50, 300, 0)
+        # dexarm1.read_Gcode1()
         print('moved dexarm1 to 50, 300, 0')
  elif (data.id == "Num 9"):
      print("script example.py", data.value)
