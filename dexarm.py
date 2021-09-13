@@ -62,13 +62,21 @@ class Dexarm:
         #This is a personal test.
         #self._send_cmd1("X0 Y0 Z-10 E0\r")
 
-    #def set_relative1(self):
+    def set_relativeDown1(self):
         #This is a personal test.
-        #self._send_cmd1("G91\r")
+        self._send_cmd1("G91\r")
+        self._send_cmd1("G0 Z-5\n")
+        self._send_cmd1("G90\r")
 
-    #def set_absolute1(self):
+    def set_relativeUp1(self):
         #This is a personal test.
-        #self._send_cmd1("G90\r")
+        self._send_cmd1("G91\r")
+        self._send_cmd1("G0 Z5\n")
+        self._send_cmd1("G90\r")    
+
+    def set_absolute1(self):
+        #This is a personal test.
+        self._send_cmd1("G90\r")
 
     def read_test1(self):
         #This is a personal test.
@@ -344,3 +352,6 @@ class Dexarm:
         self.ser1.close()
 
 print('Dexarm class loaded')
+
+
+execfile('resource/Dexarm/scripts/example.py')
