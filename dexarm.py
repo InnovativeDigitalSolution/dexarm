@@ -737,4 +737,4 @@ class Dexarm:
 print('Dexarm class loaded')
 
 
-execfile('resource/Dexarm/scripts/example.py')
+python.execfile('example.py')
