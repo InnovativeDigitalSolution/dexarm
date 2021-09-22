@@ -36,9 +36,10 @@ class Dexarm:
                 else:
                     print("read:", serial_str)
 
+    #path = "test1.gcode"
     def send_gcode1(self, wait=True):
         ####This is a personal test.
-        self.ser1.writeFile('test1.gcode')
+        self.ser1.writeFile('myOpinion.gcode')
         if not wait:
             self.ser1.reset()
             return
@@ -49,7 +50,64 @@ class Dexarm:
                     print("read ok")
                     break
                 else:
-                    print("read:", serial_str)                
+                    print("read:", serial_str)
+
+    #def removeComment(string):
+        #if (string.find(';')==-1):
+            #return string
+        #else:
+            #return string[:string.index(';')]
+
+    def strip_gcode1(self):
+        g = open('myOpinion.gcode','r')
+        print("opened gcode")
+        for line in g:
+            #l = removeComment(line)
+            #l = l.strip() # Strip all EOL characters for streaming
+            #print("striping gcode")
+            if  (line.isspace()==False and len(line)>0) :
+                self._send_cmd1(line+'\n') # Send g-code block
+                print 'Sending: ' + line
+
+    def process_letter(self, letter):
+        print('opening letter ' + letter)
+        f = open(letter,'r')
+        for line in f:
+            if  (line.isspace()==False and len(line)>0) :
+                self._send_cmd1(line+'\n')
+                print ('Dexarm1 gcode line: ' + line)
+
+    def pickAndPlace1(self):
+        h = open('pickAndPlace1.gcode','r')
+        print("opened gcode")
+        for line in h:
+            if  (line.isspace()==False and len(line)>0) :
+                self._send_cmd1(line+'\n') # Send g-code block
+                print 'Dexarm2 gcode line: ' + line
+
+    def pickAndPlace2(self):
+        j = open('pickAndPlace2.gcode','r')
+        print("opened gcode")
+        for line in j:
+            if  (line.isspace()==False and len(line)>0) :
+                self._send_cmd1(line+'\n') # Send g-code block
+                print 'Dexarm2 gcode line: ' + line
+
+    def pickPlace1(self):
+        k = open('pickPlace1.gcode','r')
+        print("opened gcode")
+        for line in k:
+            if  (line.isspace()==False and len(line)>0) :
+                self._send_cmd1(line+'\n') # Send g-code block
+                print 'Dexarm2 gcode line: ' + line 
+
+    def pickPlace2(self):
+        m = open('pickPlace2.gcode','r')
+        print("opened gcode")
+        for line in m:
+            if  (line.isspace()==False and len(line)>0) :
+                self._send_cmd1(line+'\n') # Send g-code block
+                print 'Dexarm2 gcode line: ' + line            
 
     def go_home1(self):
         """
@@ -64,13 +122,13 @@ class Dexarm:
     def set_relativeDown1(self):
         #This is a personal test.
         self._send_cmd1("G91\r")
-        self._send_cmd1("G0 Z-5\n")
+        self._send_cmd1("G0 X0 Y0 Z-3\n")
         self._send_cmd1("G90\r")
 
     def set_relativeUp1(self):
         #This is a personal test.
         self._send_cmd1("G91\r")
-        self._send_cmd1("G0 Z5\n")
+        self._send_cmd1("G0 X0 Y0 Z3\n")
         self._send_cmd1("G90\r")    
 
     def set_absolute1(self):
@@ -87,62 +145,29 @@ class Dexarm:
         self._send_cmd1("G0 X-80.33 Y338.19\n")
         self._send_cmd1("G0 X0 Y338.19\n")
         self._send_cmd1("G0 Z20\n")
-        #self._send_cmd1("G0 X0 Y300\n")
-        #self._send_cmd1("G0 X-25 Y-25\n")
-        #self._send_cmd1("G0 X25 Y-25\n")
-        #self._send_cmd1("G0 X25 Y25\n")
-        #self._send_cmd1("G0 X0 Y50\n")
-        #self._send_cmd1("G0 X-25 Y25\n")
-        #self._send_cmd1("G0 X-25 Y-25\n")
-        #self._send_cmd1("G0 X25 Y25\n")
-        #self._send_cmd1("G0 X-25 Y25\n")
-        #self._send_cmd1("G0 X25 Y-25\n")
-        #This is a personal test.
-        
-    ##Remix of test1.gcode worky!    
-    def remix(self):
-        self._send_cmd1("M2000\n")
-        self._send_cmd1("M888 P0\n")
-        self._send_cmd1("G0 X-80.33 Y337.72\n")
-        self._send_cmd1("G0 Z0\n")
-        self._send_cmd1("G0 X-80.02 Y338.19\n")
-        self._send_cmd1("G0 X-79.70 Y338.35\n")
-        self._send_cmd1("G0 X-79.55 Y338.19\n")
-        self._send_cmd1("G0 X-79.55 Y338.03\n")
-        self._send_cmd1("G0 X-79.70 Y337.40\n")
-        self._send_cmd1("G0 X-79.86 Y336.93\n")
-        self._send_cmd1("G0 Z5\n")
-        self._send_cmd1("G0 X-79.70 Y337.40\n")
-        self._send_cmd1("G0 Z0\n")
-        self._send_cmd1("G0 X-79.55 Y337.72\n")
-        self._send_cmd1("G0 X-79.23 Y338.19\n")
-        self._send_cmd1("G0 X-78.92 Y338.35\n")
-        self._send_cmd1("G0 X-78.60 Y338.35\n")
-        self._send_cmd1("G0 X-78.44 Y338.19\n")
-        self._send_cmd1("G0 X-78.44 Y338.03\n")
-        self._send_cmd1("G0 X-78.60 Y337.40\n")
-        self._send_cmd1("G0 X-78.76 Y336.93\n")
-
-        self._send_cmd1("G0 Z80\n")
-        self._send_cmd1("G0 X0 Y190\n")
-        #self._send_cmd1("M601\n")
-        
+    
     def disconnect1(self):
+        #This is a personal test.
         self.ser1.disconnect()    
 
-    def strip_gcode1(self):
-        f = open('myOpinion.gcode','r')
-        print("opened gcode")
-        for line in f:
-            if  (line.isspace()==False and len(line)>0) :
-                self._send_cmd1(line+'\n') # Send g-code block
-                print 'Sending: ' + line    
+    def read_Gcode1(self):
+        #This is a personal test.
+        #path = "resource/Dexarm/gcode/hourse.gcode"
+        #self.ser1.write(path.encode())
+        self.ser1.writeFile('test1.gcode')
+        #self._send_cmd1("path\r")    
 
     def set_workorigin1(self):
         """
         Set the current position as the new work origin.
         """
-        self._send_cmd1("G92 X0 Y0 Z0 E0\r")
+        self._send_cmd1("G92 X0 Y300 Z0\r")
+
+    def move_to_workorigin1(self):
+        """
+        Move to the current work position.
+        """
+        self._send_cmd1("G0 X0 Y300 Z0\r")    
 
     def set_acceleration1(self, acceleration, travel_acceleration, retract_acceleration=60):
         """
@@ -216,7 +241,7 @@ class Dexarm:
         cmd = cmd + "\r\n"
         self._send_cmd1(cmd, wait=wait)
 
-    def fast_move_to1(self, x=None, y=None, z=None, feedrate=2000, wait=True):
+    #def fast_move_to1(self, x=None, y=None, z=None, feedrate=2000, wait=True):
         """
         Fast move to a cartesian position, i.e., in mode G0
 
@@ -224,7 +249,11 @@ class Dexarm:
             x, y, z (int): the position, in millimeters by default. Units may be set to inches by G20. Note that the center of y axis is 300mm.
             feedrate (int): sets the feedrate for all subsequent moves
         """
-        self.move_to1(self, x=x, y=y, z=z, feedrate=feedrate, mode="G0", wait=wait)
+        #self.move_to1(self, x=x, y=y, z=z, feedrate=feedrate, mode="G0", wait=wait)
+
+    def fast_move_to1(self, x, y, z, feedrate=6000, wait=True):
+        cmd = "G0"+"F" + str(feedrate) + "X"+str(x) + "Y" + str(y) + "Z" + str(z) + "\r\n"
+        self._send_cmd1(cmd, wait=wait)    
 
     def get_current_position1(self):
         """
@@ -272,17 +301,7 @@ class Dexarm:
         Args:
             value (int): time in s
         """
-        self._send_cmd1("G4 S" + str(value) + '\r')
-
-    def rotate_wrist1(self, value):
-        #This is a personal test.
-        """
-        Setting the rotation of wrist in way or the other
-
-        Args:
-            value (int): degrees of rotation
-        """
-        self._send_cmd1("M1114" + str(value) + '\r')    
+        self._send_cmd1("G4 S" + str(value) + '\r')    
 
     def soft_gripper_pick1(self):
         """
@@ -313,6 +332,16 @@ class Dexarm:
         Pickup an object
         """
         self._send_cmd1("M1000\r")
+
+    def air_picker_rotate1(self, radius=0):
+        """
+        Setting the rotation of wrist in way or the other
+
+        Args:
+            value (int): degrees of rotation
+        """
+        self._send_cmd1("M2100"'\r')
+        self._send_cmd1("M2101 P" + str(radius) + '\r')    
 
     def air_picker_place1(self):
         """
@@ -379,7 +408,100 @@ class Dexarm:
         """
         self.ser1.close()
 
+    def disconnect1(self):
+        """
+        Release the serial port.
+        """
+        self.ser1.clear()    
+
+def action2():
+    letters = ['letter1.gcode','letter2.gcode','letter3.gcode']
+    for letter in letters:
+        # We move dexarm1 away
+        dexarm1.fast_move_to1(140, 160, 80)
+        print "moved dexarm1"
+        # We start dexarm2 to set the paper
+        ##dexarm2.pickAndPlace1()  ##gcode
+        
+        dexarm2.delay_s1(2)
+        #dexarm2.set_module_type2(6)
+        dexarm2.fast_move_to1(220, 320, 100)
+        dexarm2.fast_move_to1(220, 320, 0)
+        dexarm2.air_picker_pick1()
+        dexarm2.fast_move_to1(220, 320, 100)
+        dexarm2.delay_s1(1)
+        dexarm2.air_picker_rotate1(-35)
+        
+        dexarm2.fast_move_to1(0, 320, 100)
+        dexarm2.fast_move_to1(0, 320, 0)
+        dexarm2.air_picker_place1()
+        dexarm2.air_picker_natur1()
+        dexarm2.delay_s1(2)
+
+        dexarm2.fast_move_to1(0, 320, 100)
+        dexarm2.delay_s1(1)
+        dexarm2.air_picker_rotate1(35)
+
+        dexarm2.fast_move_to1(140, 160, 100)
+        print "dexarm2 picked and placed paper"
+
+        dexarm1.delay_s1(7)
+        # We start dexarm1 to write on paper
+        dexarm1.process_letter(letter)  ##gcode
+
+        # gcode move dexarm1 away
+        #dexarm1.move_to1(140, 180, 50)
+
+        # We start dexarm2 to remove the written paper
+        #sleep(5) #needs to wait until the end of previous gcode
+        dexarm2.pickAndPlace2() ##gcode
+        #dexarm2.delay_s1(5)
+        #dexarm2.fast_move_to1(0, 320, 100)
+        #dexarm2.fast_move_to1(0, 320, 0)
+        #dexarm2.air_picker_pick1()
+        #dexarm2.fast_move_to1(0, 320, 100)
+
+        #dexarm2.delay_s1(1)
+        #dexarm2.air_picker_rotate1(-35)
+
+        #dexarm2.fast_move_to1(-225, 315, 100)
+        #dexarm2.fast_move_to1(-225, 315, 0)
+        #dexarm2.air_picker_place1()
+        #dexarm2.air_picker_nature1()
+        #dexarm2.delay_s1(2)
+        
+        #dexarm2.fast_move_to1(-225, 315, 100)
+
+        #dexarm2.delay_s1(1)
+        #dexarm2.air_picker_rotate1(35)
+
+        #dexarm2.fast_move_to1(140, 160, 100)
+        print "dexarm2 removed paper"
+
+def action1():
+    letters = ['letter1.gcode','letter2.gcode','letter3.gcode','letter4.gcode','letter5.gcode','letter6.gcode','letter7.gcode']
+    for letter in letters:
+        # We move dexarm1 away
+        dexarm2.delay_s1(1)
+        dexarm1.fast_move_to1(100, 218, 36)
+        print "dexarm1 moved to rotate paper"
+
+        # We start dexarm2 to set the paper
+        dexarm2.pickPlace1()  ##gcode
+        print "dexarm2 picked and placed paper"
+
+        # We start dexarm1 to write on paper
+        dexarm1.delay_s1(5)
+        #dexarm1.fast_move_to1(160, 150, 100)
+        dexarm1.process_letter(letter)  ##gcode
+
+        dexarm2.delay_s1(2)
+        # We start dexarm2 to remove the written paper
+        dexarm2.pickPlace2() ##gcode
+        print "dexarm2 removed paper"
+
+
 print('Dexarm class loaded')
 
 
-python.execfile('example.py')
+python.execFile('joystick.py')
