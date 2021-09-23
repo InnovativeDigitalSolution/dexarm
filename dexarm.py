@@ -13,6 +13,7 @@ class Dexarm:
 
         #self.ser1 = serial.Serial(port, 115200, timeout=None)
         #self.is_open = self.ser1.isOpen()
+        self.stop = False
         self.ser1 = Runtime.start(name,"Serial")
         self.ser1.connect(port, 115200, 8, 1, 0)
         self.is_open = self.ser1.isConnected()
@@ -20,6 +21,10 @@ class Dexarm:
             print('pydexarm: %s connected' % self.ser1.name)
         else:
             print('failed to connect to serial port')
+
+    def stop(self):
+        self.stop = True
+
 
     def _send_cmd1(self, data, wait=True):
 
@@ -72,7 +77,7 @@ class Dexarm:
     def process_letter(self, letter):
         print('opening letter ' + letter)
         f = open(letter,'r')
-        for line in f:
+        for line in f and not self.stop:
             if  (line.isspace()==False and len(line)>0) :
                 self._send_cmd1(line+'\n')
                 print ('Dexarm1 gcode line: ' + line)
@@ -476,7 +481,7 @@ def action2():
         #dexarm2.air_picker_rotate1(35)
 
         #dexarm2.fast_move_to1(140, 160, 100)
-        print "dexarm2 removed paper"
+        print ("dexarm2 removed paper")
 
 def action1():
     letters = ['letter1.gcode','letter2.gcode','letter3.gcode','letter4.gcode','letter5.gcode','letter6.gcode','letter7.gcode']
@@ -484,11 +489,11 @@ def action1():
         # We move dexarm1 away
         dexarm2.delay_s1(1)
         dexarm1.fast_move_to1(100, 218, 36)
-        print "dexarm1 moved to rotate paper"
+        print ("dexarm1 moved to rotate paper")
 
         # We start dexarm2 to set the paper
         dexarm2.pickPlace1()  ##gcode
-        print "dexarm2 picked and placed paper"
+        print ("dexarm2 picked and placed paper")
 
         # We start dexarm1 to write on paper
         dexarm1.delay_s1(5)
@@ -498,7 +503,7 @@ def action1():
         dexarm2.delay_s1(2)
         # We start dexarm2 to remove the written paper
         dexarm2.pickPlace2() ##gcode
-        print "dexarm2 removed paper"
+        print ("dexarm2 removed paper")
 
 
 print('Dexarm class loaded')

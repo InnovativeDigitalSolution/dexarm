@@ -21,6 +21,7 @@ down_dexarm1 = "Down"
 up_dexarm1 = "Up"
 down_dexarm2 = "Left"
 up_dexarm2 = "Right"
+stop = "Space"
 
 # start 2 dexarms
 dexarm1 = Dexarm('serial1', dexarmPort1)
@@ -51,6 +52,9 @@ def onJoystickInput(data):
             #dexarm1.read_Gcode1()
             print('moved dexarm1 to 50, 300, 0')
             #print('moved dexarm1 to test1.gcode')
+    elif (data.id == stop):
+        dexarm1.stop()
+        dexarm2.stop()
     elif (data.id == exec_action2):
         if (data.value == 1):
             print("executing action2", data.value)
