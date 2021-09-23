@@ -13,7 +13,8 @@ class Dexarm:
 
         #self.ser1 = serial.Serial(port, 115200, timeout=None)
         #self.is_open = self.ser1.isOpen()
-        self.stop = False
+        self.name = name
+        self.stopped = False
         self.ser1 = Runtime.start(name,"Serial")
         self.ser1.connect(port, 115200, 8, 1, 0)
         self.is_open = self.ser1.isConnected()
@@ -23,7 +24,8 @@ class Dexarm:
             print('failed to connect to serial port')
 
     def stop(self):
-        self.stop = True
+        print('dexarm', self.name, 'stopping')
+        self.stopped = True
 
 
     def _send_cmd1(self, data, wait=True):
@@ -77,7 +79,7 @@ class Dexarm:
     def process_letter(self, letter):
         print('opening letter ' + letter)
         f = open(letter,'r')
-        for line in f and not self.stop:
+        for line in f and not self.stopped:
             if  (line.isspace()==False and len(line)>0) :
                 self._send_cmd1(line+'\n')
                 print ('Dexarm1 gcode line: ' + line)

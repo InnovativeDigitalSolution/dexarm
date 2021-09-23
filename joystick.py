@@ -22,6 +22,9 @@ up_dexarm1 = "Up"
 down_dexarm2 = "Left"
 up_dexarm2 = "Right"
 stop = "Space"
+# stop = "A"
+# move_to = "C"
+# runtime.setVirtual(True)
 
 # start 2 dexarms
 dexarm1 = Dexarm('serial1', dexarmPort1)
@@ -42,6 +45,7 @@ joy.addInputListener(python)
 #this is the method in python which receive the data from joystick service
 #it is triggered only when new data arrive, it's not a loop !
 def onJoystickInput(data):
+    global dexarm1, dexarm2
     #this print the name of the key/button you pressed (it's a String)
     #this print the value of the key/button (it's a Float)
     print (data)
@@ -53,8 +57,11 @@ def onJoystickInput(data):
             print('moved dexarm1 to 50, 300, 0')
             #print('moved dexarm1 to test1.gcode')
     elif (data.id == stop):
+        print('stopping dexarm1')
         dexarm1.stop()
+        print('stopping dexarm2')
         dexarm2.stop()
+        print('stopped both arms')
     elif (data.id == exec_action2):
         if (data.value == 1):
             print("executing action2", data.value)
@@ -115,4 +122,4 @@ def onJoystickInput(data):
             print("Moving up dexarm1", data.value)
             dexarm1.set_relativeUp1()        
 '''
-print('example script loaded')
+print('joystick.py loaded')
